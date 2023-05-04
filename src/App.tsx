@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import './App.css';
 import TodoList from './TodoList';
 import {v1} from 'uuid';
+import todoList from './TodoList';
+import {AddItemForm} from './AddItemForm';
 
 
 //CRUD
@@ -52,7 +54,6 @@ function App() {
     });
 
     const removeTask = (todoListId: string, taskId: string) => {
-        console.log(tasks.todoListId)
         const updatedTasks = tasks[todoListId].filter(t => t.id !== taskId)
         setTasks({...tasks, [todoListId]: updatedTasks})
     }
@@ -91,10 +92,6 @@ function App() {
         // delete tasks[todoListId]; вариант изменения стейта без перерисовки
     }
 
-    /* const addTodoList = (title: string) => {
-         const todo_id = v1();
-     }*/
-
     const getTasksForRender = (tasksList: Array<TaskType>, filterValue: FilterValuesType) => {
         switch (filterValue) {
             case 'active':
@@ -105,6 +102,25 @@ function App() {
                 return tasksList
         }
     }
+
+    const addTodoList = (title: string) => {
+        const newTodoList: TodoListType = {
+            id: v1(),
+            title: title,
+            filter: 'all'
+        }
+        setTodoLists([...todoLists, newTodoList]);
+        setTasks({...tasks, [newTodoList.id]: []});
+    }
+
+    const changeTodoListTitle = (title: string, todoListId: string) => {
+        setTodoLists(todoLists.map(todo => todo.id === todoListId ? {...todo, title} : todo))
+    }
+
+    const changeTaskTitle = (taskId: string, todoListId: string, title: string) => {
+        setTasks({...tasks, [todoListId]: tasks[todoListId].map(task => task.id === taskId ? {...task, title} : task)})
+    }
+
 
     const todoListsComponents: JSX.Element[] = todoLists.map(todo => {
         const tasksWhatIWantToSee = getTasksForRender(tasks[todo.id], todo.filter)
@@ -119,12 +135,15 @@ function App() {
             changeFilter={changeTodoListFilter}
             changeTaskStatus={changeTaskStatus}
             removeTodoList={removeTodoList}
+            changeTaskTitle={changeTaskTitle}
+            changeTodoListTitle={changeTodoListTitle}
         />)
     })
 
 
     return (
         <div className="App">
+            <AddItemForm titleMaxLength={25} addItem={addTodoList} />
             {todoListsComponents}
         </div>
     );
