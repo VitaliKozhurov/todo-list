@@ -5,13 +5,11 @@ import {v1} from 'uuid';
 import todoList from './TodoList';
 import {AddItemForm} from './AddItemForm';
 
-
 //CRUD
 //C-create
 //R-read (filter, search, sort, pagination)
 //U-update
 //D-delete
-
 
 export type TodoListType = {
     id: string
