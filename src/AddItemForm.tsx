@@ -1,57 +1,49 @@
-import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {IconButton, TextField} from "@mui/material";
+import {AddBox} from "@mui/icons-material";
 
-type AddItemFormProps = {
-    titleMaxLength: number
+
+
+type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
-export const AddItemForm: FC<AddItemFormProps> = ({titleMaxLength, addItem}) => {
-    const [title, setTitle] = useState<string>('');
-    const [error, setError] = useState(false);
+export function AddItemForm(props: AddItemFormPropsType) {
 
+    let [title, setTitle] = useState("")
+    let [error, setError] = useState<string | null>(null)
 
-    const setTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        error && setError(false)
+    const addItem = () => {
+        if (title.trim() !== "") {
+            props.addItem(title);
+            setTitle("");
+        } else {
+            setError("Title is required");
+        }
+    }
+
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
-    const addItemHandler = () => {
-        const trimmedTitle = title.trim()
-        if (trimmedTitle) {
-            addItem(trimmedTitle)
-        } else {
-            setError(true)
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        setError(null);
+        if (e.charCode === 13) {
+            addItem();
         }
-        setTitle('')
     }
-    const addTaskOnKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && !isAddBtnDisabled && addItemHandler()
 
-    const isTitleLengthTooLong: boolean = title.length > titleMaxLength
-    const isAddBtnDisabled: boolean = !title.length || isTitleLengthTooLong || error
-    const titleMaxLengthWarning = isTitleLengthTooLong
-        ? <div style={{color: 'red'}}>Title is too long!</div>
-        : null
-    const userMessage = error
-        ? <div style={{color: 'red'}}>Title is required!</div>
-        : null
-
-
-    const inputClasses = error || isTitleLengthTooLong ? 'input-error' : undefined
-
-    return (
-        <div className={'add-form'}>
-            <input
-                placeholder="Please, enter title"
-                value={title}
-                onChange={setTitleHandler}
-                onKeyDown={addTaskOnKeyPressHandler}
-                className={inputClasses}
-            />
-            <button
-                disabled={isAddBtnDisabled}
-                onClick={addItemHandler}
-            >+
-            </button>
-            {titleMaxLengthWarning || userMessage}
-        </div>
-    )
-};
+    return <div>
+        <TextField variant="outlined"
+                   error={!!error}
+                   value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   label="Title"
+                   helperText={error}
+        />
+        <IconButton color="primary" onClick={addItem}>
+            <AddBox />
+        </IconButton>
+    </div>
+}
