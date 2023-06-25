@@ -1,0 +1,35 @@
+import {todoListInstance} from './axiosInstance';
+
+type TodoListType = {
+    id: string
+    title: string
+    addedDate: string
+    order: number
+}
+type CreateTodoDataType = {
+    item: TodoListType
+}
+type TodoListResponseType<T = {}> = {
+    data: T
+    resultCode: number
+    messages: string[]
+    fieldsErrors?: string[]
+}
+
+export class TodoListsAPI {
+    static getTodoLists() {
+        return todoListInstance.get<TodoListType[]>('todo-lists')
+    }
+
+    static createTodoList(title: string) {
+        return todoListInstance.post<TodoListResponseType<CreateTodoDataType>>('todo-lists', {title})
+    }
+
+    static upDateTodoList(todoListID: string, title: string) {
+        return todoListInstance.put<TodoListResponseType>(`todo-lists/${todoListID}`, {title})
+    }
+
+    static deleteTodoList(todoListID: string) {
+        return todoListInstance.delete<TodoListResponseType>(`todo-lists/${todoListID}`)
+    }
+}
