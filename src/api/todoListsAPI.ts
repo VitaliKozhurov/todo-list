@@ -1,13 +1,13 @@
 import {todoListInstance} from './axiosInstance';
 
-type TodoListType = {
+export type TodoListApiType = {
     id: string
     title: string
     addedDate: string
     order: number
 }
 type CreateTodoDataType = {
-    item: TodoListType
+    item: TodoListApiType
 }
 type TodoListResponseType<T = {}> = {
     data: T
@@ -18,7 +18,7 @@ type TodoListResponseType<T = {}> = {
 
 export class TodoListsAPI {
     static getTodoLists() {
-        return todoListInstance.get<TodoListType[]>('todo-lists')
+        return todoListInstance.get<TodoListApiType[]>('todo-lists')
     }
 
     static createTodoList(title: string) {
