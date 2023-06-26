@@ -41,7 +41,7 @@ type TasksActionsType =
     | ReturnType<typeof addTodoListAC>
     | ReturnType<typeof removeTodoListAC>;
 
-type TasksType = {
+export type TasksType = {
     [key: string]: Array<TaskType>;
 };
 
