@@ -3,9 +3,10 @@ import {FC} from 'react';
 import s from './Task.module.css';
 import {CustomCheckbox} from '../UI/CustomCheckbox/CustomCheckbox';
 import {useDispatch} from 'react-redux';
-import {changeTaskStatusAC, changeTaskTitleAC} from '../../state/tasksReducer/tasksReducer';
+import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from '../../state/tasksReducer/tasksReducer';
 import {EditableSpan} from '../UI/EditableSpan/EditableSpan';
-
+import {IconButton} from '@mui/material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 export const Task: FC<TaskType> = (props) => {
     const {
@@ -24,12 +25,18 @@ export const Task: FC<TaskType> = (props) => {
     const changeTaskTitle = (title: string) => {
         dispatch(changeTaskTitleAC(todoListId, id, title))
     }
+    const onRemoveTask = () => {
+        dispatch(removeTaskAC(todoListId, id))
+    }
 
 
     return <>
         <div className={s.taskBody}>
             <CustomCheckbox checked={status === 1} color={'primary'} callback={changeTaskStatus} />
-            <EditableSpan title={title} changeTitle = {changeTaskTitle} />
+            <EditableSpan title={title} changeTitle={changeTaskTitle} />
+            <IconButton>
+                <DeleteOutlineIcon color={'error'} onClick={onRemoveTask} />
+            </IconButton>
         </div>
     </>;
 };

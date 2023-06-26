@@ -1,9 +1,15 @@
-.cardBody{
-    width: 250px;
+.cardBody {
+    width: 280px;
     height: 100%;
 }
 
-.title{
-    text-align: center;
+.titleBody {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
     text-transform: uppercase;
+    margin: 0;
 }

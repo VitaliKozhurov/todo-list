@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, FC, useState} from 'react';
 import s from './EditableSpan.module.css';
 import TextField from '@mui/material/TextField/TextField';
 
@@ -15,26 +15,27 @@ export const EditableSpan: FC<EditableSpanPropsType> = ({title, changeTitle}) =>
         setEditMode(true)
     }
     const activateViewMode = () => {
+        if (taskTitle.length > 15) {
+            setError('Title is too long!');
+            return
+        }
         if (taskTitle.trim()) {
             setEditMode(false);
             changeTitle(taskTitle);
-        } else {
+        }
+        if (!taskTitle.trim()) {
             setError('Field can not be empty')
         }
-
     }
-
     const onChangeTaskTitle = (e: ChangeEvent<HTMLInputElement>) => {
         error && setError(null);
-        if(taskTitle.length>15){
-            setError('Title is long!')
-        } else {
-            setTaskTitle(e.currentTarget.value);
-        }
-
+        setTaskTitle(e.currentTarget.value);
     }
-
-
+    const onPressEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.code === 'Enter') {
+            activateViewMode();
+        }
+    }
     return (
         <div className={s.body}>
             {editMode
@@ -47,6 +48,7 @@ export const EditableSpan: FC<EditableSpanPropsType> = ({title, changeTitle}) =>
                     onChange={onChangeTaskTitle}
                     autoFocus
                     onBlur={activateViewMode}
+                    onKeyDown={onPressEnter}
                 />
                 : <span onDoubleClick={activateEditMode}>{title}</span>}
         </div>
