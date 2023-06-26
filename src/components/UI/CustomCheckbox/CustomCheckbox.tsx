@@ -10,9 +10,9 @@ type CheckBoxType = {
         | "success"
         | "warning"
         | "default";
-    callback: (value: boolean) => void;
+    callback: (status: boolean) => void;
 };
-export const SuperCheckBox: FC<CheckBoxType> = ({
+export const CustomCheckbox: FC<CheckBoxType> = ({
     checked,
     color,
     callback,

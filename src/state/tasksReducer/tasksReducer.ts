@@ -4,6 +4,7 @@ import {
     addTodoListAC,
     removeTodoListAC,
 } from "../todoListReducer/todolists-reducer";
+import {AppStateType} from '../store';
 
 export const addTasksAC = (todoListID: string, title: string) =>
     ({

@@ -1,0 +1,9 @@
+.cardBody{
+    width: 250px;
+    height: 100%;
+}
+
+.title{
+    text-align: center;
+    text-transform: uppercase;
+}
