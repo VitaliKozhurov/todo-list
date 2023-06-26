@@ -3,7 +3,7 @@ import {changeTodoListTitleAC, removeTodoListAC, TodoListType} from '../../state
 import s from './TodoList.module.css';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {useDispatch, useSelector} from 'react-redux';
-import {tasksSelector} from '../../state/tasksReducer/tasksSelector';
+import {_tasksSelector, tasksSelector} from '../../state/tasksReducer/tasksSelector';
 import {addTasksAC} from '../../state/tasksReducer/tasksReducer';
 import {Task} from '../Task/Task';
 import {EditableSpan} from '../UI/EditableSpan/EditableSpan';
@@ -12,7 +12,9 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
 export const TodoList: FC<TodoListType> = ({id, title, order, addedDate, filter}) => {
-    const tasks = useSelector(tasksSelector)[id];
+    // Сравнить по оптимизации !!!!!!!!!!!!
+    /*const tasks = useSelector(tasksSelector)[id];*/
+    const tasks = useSelector(_tasksSelector(id));
     const dispatch = useDispatch();
     const onAddItemHandler = useCallback((title: string) => {
         dispatch(addTasksAC(id, title))

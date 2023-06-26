@@ -1,10 +1,9 @@
 import { v1 } from "uuid";
-import { TaskType } from "../../api/tasksAPI";
+import {TaskPriorities, TaskStatuses, TaskType} from '../../api/tasksAPI';
 import {
     addTodoListAC,
     removeTodoListAC,
 } from "../todoListReducer/todolists-reducer";
-import {AppStateType} from '../store';
 
 export const addTasksAC = (todoListID: string, title: string) =>
     ({
@@ -59,8 +58,8 @@ export const tasksReducer = (
                 id: v1(),
                 description: "",
                 title: action.payload.title,
-                status: 0,
-                priority: 0,
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Low,
                 startDate: "",
                 deadline: "",
                 order: 0,

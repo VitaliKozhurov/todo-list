@@ -1,15 +1,13 @@
+import {addTodoListAC, removeTodoListAC,} from '../todoListReducer/todolists-reducer';
 import {
-    addTodoListAC,
-    removeTodoListAC,
-} from "../todoListReducer/todolists-reducer";
-import {
-    TasksType,
     addTasksAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC,
     tasksReducer,
-} from "./tasksReducer";
+    TasksType,
+} from './tasksReducer';
+import {TaskPriorities, TaskStatuses} from '../../api/tasksAPI';
 
 describe("Tasks reducer tests", () => {
     let tasks: TasksType;
@@ -23,8 +21,8 @@ describe("Tasks reducer tests", () => {
                     id: taskID,
                     description: "",
                     title: "First task",
-                    status: 0,
-                    priority: 0,
+                    status: TaskStatuses.New,
+                    priority: TaskPriorities.Low,
                     startDate: "",
                     deadline: "",
                     order: 0,
@@ -67,7 +65,7 @@ describe("Tasks reducer tests", () => {
         );
 
         expect(newTasks[todoID].length).toBe(1);
-        expect(newTasks[todoID][0].status).toBe(1);
+        expect(newTasks[todoID][0].status).toBe(TaskStatuses.Completed);
         expect(newTasks[todoID][0].id).toBe(taskID);
     });
 
