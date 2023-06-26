@@ -1,0 +1,17 @@
+.body {
+    width: 450px;
+    margin: 40px auto;
+}
+.box {
+    display: flex;
+    align-items: flex-end;
+}
+
+.inputField {
+}
+
+.btn {
+    margin-left: 20px;
+    font-weight: 700;
+    padding: 16px;
+}

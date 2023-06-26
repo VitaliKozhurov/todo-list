@@ -1,17 +1,15 @@
 import React, { ChangeEvent } from "react";
-import { AddItemForm } from "./components/AddItemForm";
+import { AddItemForm } from "./components/AddItemForm/AddItemForm";
 import { EditableSpan } from "./components/EditableSpan";
 import IconButton from "@mui/material/IconButton/IconButton";
 import { Delete } from "@mui/icons-material";
 import { Button, Checkbox } from "@mui/material";
-import { SuperCheckBox } from "./components/SuperCheckbox";
-
+import { SuperCheckBox } from "./components/UI/SuperCheckbox";
 
 export function TodoList_example() {
-
     return (
         <div>sdf</div>
-       /* <div>
+        /* <div>
             <h3>
                 {" "}
                 <EditableSpan
