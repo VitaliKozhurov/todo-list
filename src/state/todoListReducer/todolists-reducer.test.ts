@@ -5,6 +5,7 @@ import {
     changeTodoListFilterAC,
     changeTodoListTitleAC,
     removeTodoListAC,
+    setTodoListsAC,
     todoListsReducer,
 } from "./todolists-reducer";
 
@@ -58,5 +59,27 @@ describe("Todo list reducer tests", () => {
             removeTodoListAC("First_todo")
         );
         expect(newState.length).toBe(0);
+    });
+    it("Should set todolists in state from server with filter field", () => {
+        const todoLists = [
+            {
+                id: "First_todo",
+                title: "First_todo",
+                addedDate: "",
+                order: 0,
+            },
+            {
+                id: "Second_todo",
+                title: "Second_todo",
+                addedDate: "",
+                order: 0,
+            },
+        ];
+
+        const state = todoListsReducer([], setTodoListsAC(todoLists));
+
+        expect(state.length).toBe(2);
+        expect(state[0].filter).toBe("all");
+        expect(state[1].filter).toBe("all");
     });
 });

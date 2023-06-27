@@ -65,4 +65,7 @@ const CustomButton = styled(Button)({
     marginLeft: "10px",
     fontWeight: 700,
     fontSize: 22,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
 });

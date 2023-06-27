@@ -1,8 +1,9 @@
 import { v1 } from "uuid";
-import {TaskPriorities, TaskStatuses, TaskType} from '../../api/tasksAPI';
+import { TaskPriorities, TaskStatuses, TaskType } from "../../api/tasksAPI";
 import {
     addTodoListAC,
     removeTodoListAC,
+    setTodoListsAC,
 } from "../todoListReducer/todolists-reducer";
 
 export const addTasksAC = (todoListID: string, title: string) =>
@@ -27,19 +28,27 @@ export const changeTaskTitleAC = (
 export const changeTaskStatusAC = (
     todoListID: string,
     taskID: string,
-    status: number
+    status: TaskStatuses
 ) =>
     ({
         type: "CHANGE-TASK-STATUS",
         payload: { todoListID, taskID, status },
     } as const);
+export const setTasksAC = (todoListID: string, tasks: TaskType[]) =>
+    ({
+        type: "SET-TASKS",
+        payload: { todoListID, tasks },
+    } as const);
+
 type TasksActionsType =
     | ReturnType<typeof addTasksAC>
     | ReturnType<typeof removeTaskAC>
     | ReturnType<typeof changeTaskTitleAC>
     | ReturnType<typeof changeTaskStatusAC>
     | ReturnType<typeof addTodoListAC>
-    | ReturnType<typeof removeTodoListAC>;
+    | ReturnType<typeof removeTodoListAC>
+    | ReturnType<typeof setTodoListsAC>
+    | ReturnType<typeof setTasksAC>;
 
 export type TasksType = {
     [key: string]: Array<TaskType>;
@@ -115,6 +124,19 @@ export const tasksReducer = (
             const copyState = { ...state };
             delete copyState[action.payload.todoListID];
             return copyState;
+        }
+        case "SET-TODO-LISTS": {
+            const copyState = { ...state };
+            action.payload.todoLists.forEach(
+                (todo) => (copyState[todo.id] = [])
+            );
+            return copyState;
+        }
+        case "SET-TASKS": {
+            return {
+                ...state,
+                [action.payload.todoListID]: action.payload.tasks,
+            };
         }
 
         default:

@@ -1,11 +1,14 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { todoListsSelector } from "./state/todoListReducer/todoListSelectors";
 import { AddItemForm } from "./components/AddItemForm/AddItemForm";
 import { TodoList } from "./components/TodoList/TodoList";
 import { Card, Grid, Paper } from "@mui/material";
-import { addTodoListAC } from "./state/todoListReducer/todolists-reducer";
+import {
+    addTodoListAC,
+    getTodoListTC,
+} from "./state/todoListReducer/todolists-reducer";
 import { v1 } from "uuid";
 
 function App() {
@@ -17,10 +20,19 @@ function App() {
         },
         [dispatch]
     );
+    // Example request for todo lists
+    useEffect(() => {
+        /* dispatch(getTodoListTC()); */
+    }, []);
     return (
         <div className="App">
             <AddItemForm onAddItem={addTodoList} title="Add new todo" />
-            <Grid container spacing={10} alignItems="stretch">
+            <Grid
+                style={{ marginBottom: "50px", justifyContent: "center" }}
+                container
+                spacing={10}
+                alignItems="stretch"
+            >
                 {todoLists.map((todo) => (
                     <Grid item key={todo.id}>
                         <Paper style={{ height: "100%" }}>

@@ -1,30 +1,30 @@
-import {todoListInstance} from './axiosInstance';
+import { todoListInstance } from "./axiosInstance";
 
 export enum TaskStatuses {
     New,
     InProgress,
     Completed,
-    Draft
+    Draft,
 }
 export enum TaskPriorities {
     Low,
     Middle,
     Hi,
     Urgently,
-    Later
+    Later,
 }
 
 export type TaskType = {
-    todoListId: string
-    id: string
-    description: string | null
-    title: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string | null
-    deadline: string | null
-    order: number
-    addedDate: string
+    todoListId: string;
+    id: string;
+    description: string | null;
+    title: string;
+    status: TaskStatuses;
+    priority: TaskPriorities;
+    startDate: string | null;
+    deadline: string | null;
+    order: number;
+    addedDate: string;
 };
 type UpdateTaskRequestType = {
     title: string;
@@ -59,7 +59,7 @@ export class TasksAPI {
     static createTask(todoListID: string, title: string) {
         return todoListInstance.post<TasksResponseType<TasksDataType>>(
             `todo-lists/${todoListID}/tasks`,
-            {title}
+            { title }
         );
     }
 
