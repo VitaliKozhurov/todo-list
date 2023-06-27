@@ -39,11 +39,25 @@ describe("Tasks reducer tests", () => {
 
     it("Should add new task", () => {
         const title = "Second Task";
-        const newTasks = tasksReducer(tasks, addTasksAC(todoID, title));
+        const taskID = "Second_task";
+        const newTask = {
+            todoListId: todoID,
+            id: taskID,
+            description: "",
+            title: title,
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Low,
+            startDate: "",
+            deadline: "",
+            order: 0,
+            addedDate: "",
+        }
+        const newTasks = tasksReducer(tasks, addTasksAC(newTask));
 
         expect(newTasks[todoID].length).toBe(2);
         expect(newTasks[todoID][0].title).toBe(title);
         expect(newTasks[todoID][0].todoListId).toBe(todoID);
+        expect(newTasks[todoID][0].id).toBe(taskID);
     });
 
     it("Should remove task", () => {
@@ -147,7 +161,7 @@ describe("Tasks reducer tests", () => {
             },
         ];
 
-        const state = tasksReducer(tasks, setTasksAC("Second_todo", newTasks));
+        const state = tasksReducer(tasks, setTasksAC("First_todo", newTasks));
 
         expect(state["First_todo"].length).toBe(2);
         expect(state["First_todo"][0].todoListId).toBe("First_todo");

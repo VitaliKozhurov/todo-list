@@ -17,20 +17,20 @@ export enum TaskPriorities {
 export type TaskType = {
     todoListId: string;
     id: string;
-    description: string | null;
+    description: string;
     title: string;
     status: TaskStatuses;
     priority: TaskPriorities;
-    startDate: string | null;
-    deadline: string | null;
+    startDate: string;
+    deadline: string;
     order: number;
     addedDate: string;
 };
-type UpdateTaskRequestType = {
+export type UpdatedTaskType = {
     title: string;
     description: string;
-    status: number;
-    priority: number;
+    status: TaskStatuses;
+    priority: TaskPriorities;
     startDate: string;
     deadline: string;
 };
@@ -66,7 +66,7 @@ export class TasksAPI {
     static updateTask(
         todoListID: string,
         taskID: string,
-        updatedTask: UpdateTaskRequestType
+        updatedTask: UpdatedTaskType
     ) {
         return todoListInstance.put<TasksResponseType<TasksDataType>>(
             `todo-lists/${todoListID}/tasks/${taskID}`,
