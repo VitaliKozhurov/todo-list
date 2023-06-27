@@ -1,45 +1,89 @@
-import {FC, useCallback} from 'react';
-import {changeTodoListTitleAC, removeTodoListAC, TodoListType} from '../../state/todoListReducer/todolists-reducer';
-import s from './TodoList.module.css';
-import {AddItemForm} from '../AddItemForm/AddItemForm';
-import {useDispatch, useSelector} from 'react-redux';
-import {_tasksSelector, tasksSelector} from '../../state/tasksReducer/tasksSelector';
-import {addTasksAC} from '../../state/tasksReducer/tasksReducer';
-import {Task} from '../Task/Task';
-import {EditableSpan} from '../UI/EditableSpan/EditableSpan';
-import {IconButton} from '@mui/material';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { FC, useCallback } from "react";
+import {
+    changeTodoListFilterAC,
+    changeTodoListTitleAC,
+    FilterValuesType,
+    removeTodoListAC,
+    TodoListType,
+} from "../../state/todoListReducer/todolists-reducer";
+import s from "./TodoList.module.css";
+import { AddItemForm } from "../AddItemForm/AddItemForm";
+import { useDispatch, useSelector } from "react-redux";
+import { tasksSelector } from "../../state/tasksReducer/tasksSelector";
+import { addTasksAC } from "../../state/tasksReducer/tasksReducer";
+import { Task } from "../Task/Task";
+import { EditableSpan } from "../UI/EditableSpan/EditableSpan";
+import { IconButton } from "@mui/material";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { TaskStatuses, TaskType } from "../../api/tasksAPI";
+import { TasksFilter } from "../TasksFilter/TasksFilter";
 
+const filterTask = (filter: FilterValuesType, tasks: TaskType[]) => {
+    if (filter === "active") {
+        return tasks.filter((task) => task.status === TaskStatuses.New);
+    }
+    if (filter === "completed") {
+        return tasks.filter((task) => task.status === TaskStatuses.Completed);
+    }
+    return tasks;
+};
 
-export const TodoList: FC<TodoListType> = ({id, title, order, addedDate, filter}) => {
-    // Сравнить по оптимизации !!!!!!!!!!!!
-    /*const tasks = useSelector(tasksSelector)[id];*/
-    const tasks = useSelector(_tasksSelector(id));
+export const TodoList: FC<TodoListType> = ({
+    id,
+    title,
+    order,
+    addedDate,
+    filter,
+}) => {
+    const tasks = useSelector(tasksSelector(id));
+
     const dispatch = useDispatch();
-    const onAddItemHandler = useCallback((title: string) => {
-        dispatch(addTasksAC(id, title))
-    }, [])
-    const onChangeTodoListTitle = (title: string) => {
-        dispatch(changeTodoListTitleAC(id, title))
-    }
-    const onRemoveTodoList = () =>{
-        dispatch(removeTodoListAC(id))
-    }
-    return <div className={s.cardBody}>
-        <div className={s.titleBody}>
-            <h2 className={s.title}>
-                <EditableSpan title={title} changeTitle={onChangeTodoListTitle} />
-            </h2>
-            <IconButton>
-                <DeleteOutlineIcon color={'error'} onClick={onRemoveTodoList} />
-            </IconButton>
+    const onAddItemHandler = useCallback(
+        (title: string) => {
+            dispatch(addTasksAC(id, title));
+        },
+        [dispatch, id]
+    );
+    const onChangeTodoListTitle = useCallback(
+        (title: string) => {
+            dispatch(changeTodoListTitleAC(id, title));
+        },
+        [dispatch, id]
+    );
+    const onRemoveTodoList = () => {
+        dispatch(removeTodoListAC(id));
+    };
+    const onChangeTodoListFilter = useCallback(
+        (value: FilterValuesType) => {
+            dispatch(changeTodoListFilterAC(id, value));
+        },
+        [dispatch, id]
+    );
+    const filteredTask = filterTask(filter, tasks);
+
+    return (
+        <div className={s.cardBody}>
+            <div className={s.titleBody}>
+                <h2 className={s.title}>
+                    <EditableSpan
+                        title={title}
+                        changeTitle={onChangeTodoListTitle}
+                    />
+                </h2>
+                <IconButton onClick={onRemoveTodoList}>
+                    <DeleteOutlineIcon color={"error"} />
+                </IconButton>
+            </div>
+            <AddItemForm onAddItem={onAddItemHandler} title={"Add new task"} />
+            {filteredTask.map((task) => (
+                <Task key={task.id} {...task} />
+            ))}
+            <div className={s.filterGroup}>
+                <TasksFilter
+                    filter={filter}
+                    onChange={onChangeTodoListFilter}
+                />
+            </div>
         </div>
-        <AddItemForm onAddItem={onAddItemHandler} title={'Add new task'} />
-        {tasks.map(task => (
-            <Task
-                key={task.id}
-                {...task}
-            />
-        ))}
-    </div>
+    );
 };
