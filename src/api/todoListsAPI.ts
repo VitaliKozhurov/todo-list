@@ -1,21 +1,4 @@
 import { todoListInstance } from "./axiosInstance";
-
-export type TodoListApiType = {
-    id: string;
-    title: string;
-    addedDate: string;
-    order: number;
-};
-type CreateTodoDataType = {
-    item: TodoListApiType;
-};
-type TodoListResponseType<T = {}> = {
-    data: T;
-    resultCode: number;
-    messages: string[];
-    fieldsErrors?: string[];
-};
-
 export class TodoListsAPI {
     static getTodoLists() {
         return todoListInstance.get<TodoListApiType[]>("todo-lists");
@@ -41,3 +24,19 @@ export class TodoListsAPI {
         );
     }
 }
+
+export type TodoListApiType = {
+    id: string;
+    title: string;
+    addedDate: string;
+    order: number;
+};
+type CreateTodoDataType = {
+    item: TodoListApiType;
+};
+type TodoListResponseType<T = {}> = {
+    data: T;
+    resultCode: number;
+    messages: string[];
+    fieldsErrors?: string[];
+};

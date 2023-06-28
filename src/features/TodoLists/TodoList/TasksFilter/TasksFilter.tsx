@@ -1,6 +1,6 @@
 import MenuItem from "@mui/material/MenuItem/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select/Select";
-import { FilterValuesType } from "../../state/todoListReducer/todolists-reducer";
+import { FilterValuesType } from "../../../../state/todoListReducer/todolists-reducer";
 import { FC } from "react";
 import React from "react";
 
