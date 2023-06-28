@@ -5,12 +5,11 @@ import {
 } from "../todoListReducer/todolists-reducer";
 import {
     addTasksAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
     removeTaskAC,
     setTasksAC,
     tasksReducer,
     TasksType,
+    updateTaskAC,
 } from "./tasksReducer";
 import { TaskPriorities, TaskStatuses } from "../../api/tasksAPI";
 
@@ -51,7 +50,7 @@ describe("Tasks reducer tests", () => {
             deadline: "",
             order: 0,
             addedDate: "",
-        }
+        };
         const newTasks = tasksReducer(tasks, addTasksAC(newTask));
 
         expect(newTasks[todoID].length).toBe(2);
@@ -69,7 +68,7 @@ describe("Tasks reducer tests", () => {
     it("Should change task name", () => {
         const newTasks = tasksReducer(
             tasks,
-            changeTaskTitleAC(todoID, taskID, "Changed First task")
+            updateTaskAC(todoID, taskID, { title: "Changed First task" })
         );
 
         expect(newTasks[todoID].length).toBe(1);
@@ -80,7 +79,7 @@ describe("Tasks reducer tests", () => {
     it("Should change task status", () => {
         const newTasks = tasksReducer(
             tasks,
-            changeTaskStatusAC(todoID, taskID, TaskStatuses.Completed)
+            updateTaskAC(todoID, taskID, { status: TaskStatuses.Completed })
         );
 
         expect(newTasks[todoID].length).toBe(1);
@@ -90,10 +89,14 @@ describe("Tasks reducer tests", () => {
 
     it("When add new Todo list, should add property for tasks", () => {
         const newTodoID = "Second_todo";
-        const newTasks = tasksReducer(
-            tasks,
-            addTodoListAC(newTodoID, "Second todo list")
-        );
+        const newTodo = {
+            id: newTodoID,
+            title: newTodoID,
+            addedDate: "",
+            order: 0,
+        };
+
+        const newTasks = tasksReducer(tasks, addTodoListAC(newTodo));
 
         expect(Object.keys(newTasks).length).toBe(2);
         expect(Object.keys(newTasks)[0]).toBe(newTodoID);

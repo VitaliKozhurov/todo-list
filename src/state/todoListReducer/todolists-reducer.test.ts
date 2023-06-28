@@ -24,12 +24,16 @@ describe("Todo list reducer tests", () => {
     });
 
     it("Should add todo list", () => {
-        const newState = todoListsReducer(
-            initialState,
-            addTodoListAC(v1(), "Second_todo")
-        );
+        const newTodo = {
+            id: "Second_todo",
+            title: "Second_todo",
+            addedDate: "",
+            order: 0,
+        };
+        const newState = todoListsReducer(initialState, addTodoListAC(newTodo));
         expect(newState.length).toBe(2);
         expect(newState[0].title).toBe("Second_todo");
+        expect(newState[0].filter).toBe("all");
         expect(newState[1].title).toBe("First_todo");
     });
 
