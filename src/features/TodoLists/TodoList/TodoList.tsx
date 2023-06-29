@@ -1,14 +1,14 @@
 import { FC, useCallback, useEffect } from "react";
 import {
     changeTodoListFilterAC,
-    changeTodoListTitleAC,
+    changeTodoListTitleTC,
     FilterValuesType,
-    removeTodoListAC,
+    removeTodoListTC,
     TodoListType,
 } from "../../../state/todoListReducer/todolists-reducer";
 import s from "./TodoList.module.css";
 import { AddItemForm } from "../../../components/AddItemForm/AddItemForm";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { tasksSelector } from "../../../state/tasksReducer/tasksSelector";
 import { Task } from "./Task/Task";
 import { EditableSpan } from "../../../components/EditableSpan/EditableSpan";
@@ -16,6 +16,11 @@ import { IconButton } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { TaskStatuses, TaskType } from "../../../api/tasksAPI";
 import { TasksFilter } from "./TasksFilter/TasksFilter";
+import { useAppDispatch } from "../../../state/store";
+import {
+    addTaskTC,
+    getTasksTC,
+} from "../../../state/tasksReducer/tasksReducer";
 
 const filterTask = (filter: FilterValuesType, tasks: TaskType[]) => {
     if (filter === "active") {
@@ -35,36 +40,36 @@ export const TodoList: FC<TodoListType> = ({
     filter,
 }) => {
     const tasks = useSelector(tasksSelector(id));
-
+    const dispatch = useAppDispatch();
     useEffect(() => {
-        /*dispatch(getTasksTC(id))*/
+        dispatch(getTasksTC(id));
     }, []);
 
-    const dispatch = useDispatch();
     const onAddTaskHandler = useCallback(
         (title: string) => {
-            /*dispatch(addTaskTC(id,title))*/
-            //dispatch(addTasksAC(id, title));
+            dispatch(addTaskTC(id, title));
         },
         [dispatch, id]
     );
+
     const onChangeTodoListTitle = useCallback(
         (title: string) => {
-            // dispatch(changeTodoListTitleTC(id,title))
-            dispatch(changeTodoListTitleAC(id, title));
+            dispatch(changeTodoListTitleTC(id, title));
         },
         [dispatch, id]
     );
+
     const onRemoveTodoList = () => {
-        // dispatch(removeTodoListTC(id))
-        dispatch(removeTodoListAC(id));
+        dispatch(removeTodoListTC(id));
     };
+
     const onChangeTodoListFilter = useCallback(
         (value: FilterValuesType) => {
             dispatch(changeTodoListFilterAC(id, value));
         },
         [dispatch, id]
     );
+
     const filteredTask = filterTask(filter, tasks);
 
     return (

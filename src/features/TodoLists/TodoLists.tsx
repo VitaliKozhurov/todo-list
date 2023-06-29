@@ -2,54 +2,43 @@ import Card from "@mui/material/Card/Card";
 import Grid from "@mui/material/Grid/Grid";
 import Paper from "@mui/material/Paper/Paper";
 import { TodoList } from "./TodoList/TodoList";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useCallback, useEffect } from "react";
 import { todoListsSelector } from "../../state/todoListReducer/todoListSelectors";
 import { AddItemForm } from "../../components/AddItemForm/AddItemForm";
-import { addTodoListAC } from "../../state/todoListReducer/todolists-reducer";
-
+import {
+    addTodoListTC,
+    getTodoListTC,
+} from "../../state/todoListReducer/todolists-reducer";
+import { useAppDispatch } from "../../state/store";
+import "../../app/App.css";
 export const TodoLists = () => {
     const todoLists = useSelector(todoListsSelector);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const addTodoList = useCallback(
         (title: string) => {
-            // dispatch(addTodoListTC(title))
-            /* dispatch(
-                addTodoListAC({
-                    id: "Second_todo",
-                    title: "Second_todo",
-                    addedDate: "",
-                    order: 0,
-                })
-            ); */
+            dispatch(addTodoListTC(title));
         },
         [dispatch]
     );
     // Example request for todo lists
     useEffect(() => {
-        /*dispatch(getTodoListTC())*/
+        dispatch(getTodoListTC());
     }, []);
     return (
-        <>
+        <div className="contentBody">
             <AddItemForm onAddItem={addTodoList} title="Add new todo" />
-            <Grid
-                style={{ marginBottom: "50px", justifyContent: "center" }}
-                container
-                spacing={10}
-                alignItems="stretch"
-            >
+            <Grid style={{ justifyContent: "center" }} container spacing={10}>
                 {todoLists.map((todo) => (
                     <Grid item key={todo.id}>
-                        <Paper style={{ height: "100%" }}>
-                            <Card
-                                style={{ padding: "10px 20px", height: "100%" }}
-                            >
+                        <Paper>
+                            <Card>
                                 <TodoList {...todo} />
                             </Card>
                         </Paper>
                     </Grid>
                 ))}
             </Grid>
-        </>
+        </div>
     );
 };

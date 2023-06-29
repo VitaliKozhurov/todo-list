@@ -4254,6 +4254,11 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
+eslint-config-it-incubator@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/eslint-config-it-incubator/-/eslint-config-it-incubator-1.0.10.tgz#ce384a1c8ac354e3e63657f7cad65be5ed4cea2b"
+  integrity sha512-J6f5n/DICbRMiA4EiUMLVrx37EI/Db+MIrLXf/je/GfpRWtl8oWjBIM6Pea8WxY75HA5JWW6vf5DoPXSjg39NA==
+
 eslint-config-react-app@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/eslint-config-react-app/-/eslint-config-react-app-7.0.1.tgz#73ba3929978001c5c86274c017ea57eb5fa644b4"
@@ -7531,6 +7536,11 @@ prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha512-ESF23V4SKG6lVSGZgYNpbsiaAkdab6ZgOxe52p7+Kid3W3u3bxR4Vfd/o21dmN7jSt0IwgZ4v5MUd26FEtXE9w==
+
+prettier-config-it-incubator@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/prettier-config-it-incubator/-/prettier-config-it-incubator-1.0.1.tgz#4fb2588cf7411c4494c221b3cb8c251927ef1c15"
+  integrity sha512-Onj1Sx8NRQwx5so4dM5jsd2dQFTnSwMjLOI+j7o4xIRWC2HBSCzRNm1dnL56dSaSZdvt4Tp01M9pBQdGJgjyiA==
 
 pretty-bytes@^5.3.0, pretty-bytes@^5.4.1:
   version "5.6.0"
