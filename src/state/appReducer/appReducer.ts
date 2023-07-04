@@ -1,11 +1,11 @@
-export enum AppStatus {
+export enum EntityStatus {
     Idle = 'idle',
     Loading = 'loading',
     Succeeded = 'succeeded',
     Failed = 'failed'
 }
 
-export const setAppStatusAC = (status: AppStatus) => ({
+export const setAppStatusAC = (status: EntityStatus) => ({
     type: 'SET-APP-STATUS',
     payload: {status}
 } as const)
@@ -15,7 +15,7 @@ export const setAppErrorAC = (error: string | null) => ({
 } as const)
 
 const initialState: AppReducerStateType = {
-    status: AppStatus.Idle,
+    status: EntityStatus.Idle,
     error: null
 }
 export const appReducer = (state: AppReducerStateType = initialState, action: AppActionsType):AppReducerStateType => {
@@ -36,7 +36,7 @@ export const appReducer = (state: AppReducerStateType = initialState, action: Ap
 }
 
 export type AppReducerStateType = {
-    status: AppStatus
+    status: EntityStatus
     error: string | null
 }
 

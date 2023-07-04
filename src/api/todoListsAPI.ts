@@ -1,25 +1,26 @@
-import { todoListInstance } from "./axiosInstance";
+import {todoListInstance, ResponseType} from './axiosInstance';
+
 export class TodoListsAPI {
     static getTodoLists() {
-        return todoListInstance.get<TodoListApiType[]>("todo-lists");
+        return todoListInstance.get<TodoListApiType[]>('todo-lists');
     }
 
     static createTodoList(title: string) {
-        return todoListInstance.post<TodoListResponseType<CreateTodoDataType>>(
-            "todo-lists",
-            { title }
+        return todoListInstance.post<ResponseType<CreateTodoDataType>>(
+            'todo-lists',
+            {title}
         );
     }
 
     static upDateTodoList(todoListID: string, title: string) {
-        return todoListInstance.put<TodoListResponseType>(
+        return todoListInstance.put<ResponseType>(
             `todo-lists/${todoListID}`,
-            { title }
+            {title}
         );
     }
 
     static deleteTodoList(todoListID: string) {
-        return todoListInstance.delete<TodoListResponseType>(
+        return todoListInstance.delete<ResponseType>(
             `todo-lists/${todoListID}`
         );
     }
@@ -33,10 +34,4 @@ export type TodoListApiType = {
 };
 type CreateTodoDataType = {
     item: TodoListApiType;
-};
-type TodoListResponseType<T = {}> = {
-    data: T;
-    resultCode: number;
-    messages: string[];
-    fieldsErrors?: string[];
 };

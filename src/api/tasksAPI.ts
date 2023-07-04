@@ -1,4 +1,4 @@
-import { todoListInstance } from "./axiosInstance";
+import { todoListInstance, ResponseType } from "./axiosInstance";
 export class TasksAPI {
     static getTasks(todoListID: string) {
         return todoListInstance.get<GetTasksResponseType>(
@@ -7,7 +7,7 @@ export class TasksAPI {
     }
 
     static createTask(todoListID: string, title: string) {
-        return todoListInstance.post<TasksResponseType<TasksDataType>>(
+        return todoListInstance.post<ResponseType<TasksDataType>>(
             `todo-lists/${todoListID}/tasks`,
             { title }
         );
@@ -18,14 +18,14 @@ export class TasksAPI {
         taskID: string,
         updatedTask: UpdatedTaskType
     ) {
-        return todoListInstance.put<TasksResponseType<TasksDataType>>(
+        return todoListInstance.put<ResponseType<TasksDataType>>(
             `todo-lists/${todoListID}/tasks/${taskID}`,
             updatedTask
         );
     }
 
     static deleteTask(todoListID: string, taskID: string) {
-        return todoListInstance.delete<TasksResponseType>(
+        return todoListInstance.delete<ResponseType>(
             `todo-lists/${todoListID}/tasks/${taskID}`
         );
     }
@@ -74,9 +74,4 @@ type GetTasksResponseType = {
     totalCount: number;
     error: string | null;
 };
-type TasksResponseType<T = {}> = {
-    data: T;
-    resultCode: number;
-    messages: string[];
-    fieldsErrors?: string[];
-};
+

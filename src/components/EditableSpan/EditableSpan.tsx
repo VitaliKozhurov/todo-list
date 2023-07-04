@@ -1,18 +1,23 @@
-import React, { ChangeEvent, KeyboardEvent, FC, useState } from "react";
-import s from "./EditableSpan.module.css";
-import TextField from "@mui/material/TextField/TextField";
+import React, {ChangeEvent, KeyboardEvent, FC, useState} from 'react';
+import s from './EditableSpan.module.css';
+import TextField from '@mui/material/TextField/TextField';
 
 type EditableSpanPropsType = {
     title: string;
+    disabled?: boolean;
     changeTitle: (title: string) => void;
 };
 
 export const EditableSpan: FC<EditableSpanPropsType> = React.memo(
-    ({ title, changeTitle }) => {
+    ({title, disabled, changeTitle}) => {
         const [taskTitle, setTaskTitle] = useState<string>(title);
         const [editMode, setEditMode] = useState<boolean>(false);
         const [error, setError] = useState<string | null>(null);
+
         const activateEditMode = () => {
+            if (disabled) {
+                return
+            }
             setEditMode(true);
         };
         const activateViewMode = () => {
@@ -22,7 +27,7 @@ export const EditableSpan: FC<EditableSpanPropsType> = React.memo(
                 setTaskTitle('')
             }
             if (!taskTitle.trim()) {
-                setError("Field can not be empty");
+                setError('Field can not be empty');
             }
         };
         const onChangeTaskTitle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +35,7 @@ export const EditableSpan: FC<EditableSpanPropsType> = React.memo(
             setTaskTitle(e.currentTarget.value);
         };
         const onPressEnter = (e: KeyboardEvent<HTMLInputElement>) => {
-            if (e.code === "Enter") {
+            if (e.code === 'Enter') {
                 activateViewMode();
             }
         };
@@ -38,7 +43,7 @@ export const EditableSpan: FC<EditableSpanPropsType> = React.memo(
             <div className={s.body}>
                 {editMode ? (
                     <TextField
-                        size={"small"}
+                        size={'small'}
                         variant="outlined"
                         value={taskTitle}
                         error={!!error}

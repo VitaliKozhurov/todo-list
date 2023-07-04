@@ -1,44 +1,43 @@
-import { FC, useCallback, useEffect } from "react";
+import {FC, useCallback, useEffect} from 'react';
 import {
     changeTodoListFilterAC,
     changeTodoListTitleTC,
     FilterValuesType,
     removeTodoListTC,
     TodoListType,
-} from "../../../state/todoListReducer/todolists-reducer";
-import s from "./TodoList.module.css";
-import { AddItemForm } from "../../../components/AddItemForm/AddItemForm";
-import { useSelector } from "react-redux";
-import { tasksSelector } from "../../../state/tasksReducer/tasksSelector";
-import { Task } from "./Task/Task";
-import { EditableSpan } from "../../../components/EditableSpan/EditableSpan";
-import { IconButton } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { TaskStatuses, TaskType } from "../../../api/tasksAPI";
-import { TasksFilter } from "./TasksFilter/TasksFilter";
-import { useAppDispatch } from "../../../state/store";
-import {
-    addTaskTC,
-    getTasksTC,
-} from "../../../state/tasksReducer/tasksReducer";
+} from '../../../state/todoListReducer/todolists-reducer';
+import s from './TodoList.module.css';
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
+import {useSelector} from 'react-redux';
+import {tasksSelector} from '../../../state/tasksReducer/tasksSelector';
+import {Task} from './Task/Task';
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
+import {IconButton} from '@mui/material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import {TaskStatuses, TaskType} from '../../../api/tasksAPI';
+import {TasksFilter} from './TasksFilter/TasksFilter';
+import {useAppDispatch} from '../../../state/store';
+import {addTaskTC, getTasksTC,} from '../../../state/tasksReducer/tasksReducer';
+import {EntityStatus} from '../../../state/appReducer/appReducer';
 
 const filterTask = (filter: FilterValuesType, tasks: TaskType[]) => {
-    if (filter === "active") {
+    if (filter === 'active') {
         return tasks.filter((task) => task.status === TaskStatuses.New);
     }
-    if (filter === "completed") {
+    if (filter === 'completed') {
         return tasks.filter((task) => task.status === TaskStatuses.Completed);
     }
     return tasks;
 };
 
 export const TodoList: FC<TodoListType> = ({
-    id,
-    title,
-    order,
-    addedDate,
-    filter,
-}) => {
+                                               id,
+                                               title,
+                                               order,
+                                               addedDate,
+                                               filter,
+                                               status
+                                           }) => {
     const tasks = useSelector(tasksSelector(id));
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -72,20 +71,23 @@ export const TodoList: FC<TodoListType> = ({
 
     const filteredTask = filterTask(filter, tasks);
 
+    const todoIsLoading = status === EntityStatus.Loading;
+
     return (
         <div className={s.cardBody}>
             <div className={s.titleBody}>
                 <h2 className={s.title}>
                     <EditableSpan
                         title={title}
+                        disabled ={todoIsLoading}
                         changeTitle={onChangeTodoListTitle}
                     />
                 </h2>
-                <IconButton onClick={onRemoveTodoList}>
-                    <DeleteOutlineIcon color={"error"} />
+                <IconButton onClick={onRemoveTodoList} disabled={todoIsLoading}>
+                    <DeleteOutlineIcon color={todoIsLoading?'disabled':'error'} />
                 </IconButton>
             </div>
-            <AddItemForm onAddItem={onAddTaskHandler} title={"Add new task"} />
+            <AddItemForm onAddItem={onAddTaskHandler} title={'Add new task'} disabled={todoIsLoading} />
             {filteredTask.map((task) => (
                 <Task key={task.id} {...task} />
             ))}
