@@ -1,4 +1,4 @@
-enum AppStatus {
+export enum AppStatus {
     Idle = 'idle',
     Loading = 'loading',
     Succeeded = 'succeeded',
@@ -35,9 +35,9 @@ export const appReducer = (state: AppReducerStateType = initialState, action: Ap
     }
 }
 
-type AppReducerStateType = {
+export type AppReducerStateType = {
     status: AppStatus
     error: string | null
 }
 
-type AppActionsType = ReturnType<typeof setAppStatusAC> | ReturnType<typeof setAppErrorAC>
+export type AppActionsType = ReturnType<typeof setAppStatusAC> | ReturnType<typeof setAppErrorAC>

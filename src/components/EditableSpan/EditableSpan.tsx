@@ -16,13 +16,10 @@ export const EditableSpan: FC<EditableSpanPropsType> = React.memo(
             setEditMode(true);
         };
         const activateViewMode = () => {
-            if (taskTitle.length > 15) {
-                setError("Title is too long!");
-                return;
-            }
             if (taskTitle.trim()) {
                 setEditMode(false);
                 changeTitle(taskTitle);
+                setTaskTitle('')
             }
             if (!taskTitle.trim()) {
                 setError("Field can not be empty");

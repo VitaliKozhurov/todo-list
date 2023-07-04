@@ -8,9 +8,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import React from 'react';
 import LinearProgress from '@mui/material/LinearProgress/LinearProgress';
 import Box from '@mui/material/Box/Box';
+import {AppStateType} from '../../state/store';
+import {AppStatus} from '../../state/appReducer/appReducer';
+import {useSelector} from 'react-redux';
 
 
 export const Header = () => {
+    const isLoading = useSelector<AppStateType, AppStatus>(state => state.app.status)
     return (
         <div className={s.body}>
             <AppBar position="static">
@@ -29,9 +33,10 @@ export const Header = () => {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
-                <div className={s.loader}>
-                    <LinearProgress />
-                </div>
+                {isLoading === AppStatus.Loading && (
+                    <div className={s.loader}>
+                        <LinearProgress />
+                    </div>)}
             </AppBar>
 
         </div>
