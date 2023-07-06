@@ -63,9 +63,10 @@ export const Task: FC<AppTaskType> = React.memo((props) => {
                     callback={changeTaskStatus}
                     disabled={entityStatus === EntityStatus.Loading}
                 />
-                <EditableSpan title={title} changeTitle={changeTaskTitle} />
-                <IconButton onClick={onRemoveTask}>
-                    <DeleteOutlineIcon color={'error'} />
+                <EditableSpan title={title} changeTitle={changeTaskTitle}
+                              disabled={entityStatus === EntityStatus.Loading} />
+                <IconButton onClick={onRemoveTask} disabled={entityStatus === EntityStatus.Loading}>
+                    <DeleteOutlineIcon color={entityStatus === EntityStatus.Loading ? 'disabled' : 'error'} />
                 </IconButton>
             </div>
         </>

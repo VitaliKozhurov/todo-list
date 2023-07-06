@@ -193,6 +193,7 @@ export const updateTaskTC =
             };
 
             dispatch(setAppStatusAC(EntityStatus.Loading))
+            dispatch(changeTaskEntityStatusAC(todoListID,taskID,EntityStatus.Loading))
             TasksAPI.updateTask(todoListID, taskID, updatedTask)
                 .then((res) => {
                     if (res.data.resultCode === 0) {
@@ -205,6 +206,7 @@ export const updateTaskTC =
                 .catch((error) => {
                     appNetworkHandlingError(error, dispatch)
                 })
+                .finally(()=>dispatch(changeTaskEntityStatusAC(todoListID,taskID,EntityStatus.Idle)))
         };
 
 // types

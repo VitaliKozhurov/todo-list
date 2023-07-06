@@ -1,55 +1,55 @@
-import {
-    addTodoListAC,
-    removeTodoListAC,
-    setTodoListsAC,
-} from "../todoListReducer/todolists-reducer";
+import {addTodoListAC, removeTodoListAC, setTodoListsAC,} from '../todoListReducer/todolists-reducer';
 import {
     addTasksAC,
+    changeTaskEntityStatusAC,
     removeTaskAC,
     setTasksAC,
     tasksReducer,
     TasksType,
     updateTaskAC,
-} from "./tasksReducer";
-import { TaskPriorities, TaskStatuses } from "../../api/tasksAPI";
+} from './tasksReducer';
+import {TaskPriorities, TaskStatuses} from '../../api/tasksAPI';
+import {EntityStatus} from '../appReducer/appReducer';
 
-describe("Tasks reducer tests", () => {
+describe('Tasks reducer tests', () => {
     let tasks: TasksType;
-    const todoID = "First_todo";
-    const taskID = "First_task";
+    const todoID = 'First_todo';
+    const taskID = 'First_task';
     beforeEach(() => {
         tasks = {
             First_todo: [
                 {
                     todoListId: todoID,
                     id: taskID,
-                    description: "",
-                    title: "First task",
+                    description: '',
+                    title: 'First task',
                     status: TaskStatuses.New,
                     priority: TaskPriorities.Low,
-                    startDate: "",
-                    deadline: "",
+                    startDate: '',
+                    deadline: '',
                     order: 0,
-                    addedDate: "",
+                    addedDate: '',
+                    entityStatus: EntityStatus.Idle
                 },
             ],
         };
     });
 
-    it("Should add new task", () => {
-        const title = "Second Task";
-        const taskID = "Second_task";
+    it('Should add new task', () => {
+        const title = 'Second Task';
+        const taskID = 'Second_task';
         const newTask = {
             todoListId: todoID,
             id: taskID,
-            description: "",
+            description: '',
             title: title,
             status: TaskStatuses.New,
             priority: TaskPriorities.Low,
-            startDate: "",
-            deadline: "",
+            startDate: '',
+            deadline: '',
             order: 0,
-            addedDate: "",
+            addedDate: '',
+            entityStatus: EntityStatus.Idle
         };
         const newTasks = tasksReducer(tasks, addTasksAC(newTask));
 
@@ -59,27 +59,27 @@ describe("Tasks reducer tests", () => {
         expect(newTasks[todoID][0].id).toBe(taskID);
     });
 
-    it("Should remove task", () => {
+    it('Should remove task', () => {
         const newTasks = tasksReducer(tasks, removeTaskAC(todoID, taskID));
 
         expect(newTasks[todoID].length).toBe(0);
     });
 
-    it("Should change task name", () => {
+    it('Should change task name', () => {
         const newTasks = tasksReducer(
             tasks,
-            updateTaskAC(todoID, taskID, { title: "Changed First task" })
+            updateTaskAC(todoID, taskID, {title: 'Changed First task'})
         );
 
         expect(newTasks[todoID].length).toBe(1);
-        expect(newTasks[todoID][0].title).toBe("Changed First task");
+        expect(newTasks[todoID][0].title).toBe('Changed First task');
         expect(newTasks[todoID][0].id).toBe(taskID);
     });
 
-    it("Should change task status", () => {
+    it('Should change task status', () => {
         const newTasks = tasksReducer(
             tasks,
-            updateTaskAC(todoID, taskID, { status: TaskStatuses.Completed })
+            updateTaskAC(todoID, taskID, {status: TaskStatuses.Completed})
         );
 
         expect(newTasks[todoID].length).toBe(1);
@@ -87,12 +87,12 @@ describe("Tasks reducer tests", () => {
         expect(newTasks[todoID][0].id).toBe(taskID);
     });
 
-    it("When add new Todo list, should add property for tasks", () => {
-        const newTodoID = "Second_todo";
+    it('When add new Todo list, should add property for tasks', () => {
+        const newTodoID = 'Second_todo';
         const newTodo = {
             id: newTodoID,
             title: newTodoID,
-            addedDate: "",
+            addedDate: '',
             order: 0,
         };
 
@@ -105,71 +105,77 @@ describe("Tasks reducer tests", () => {
         expect(newTasks[newTodoID].length).toBe(0);
     });
 
-    it("When remove todo list array with tasks should be removed", () => {
+    it('When remove todo list array with tasks should be removed', () => {
         const newTasks = tasksReducer(tasks, removeTodoListAC(todoID));
 
         expect(Object.keys(newTasks).length).toBe(0);
         expect(Object.values(newTasks).length).toBe(0);
     });
 
-    it("Should set task in task object when todolists set from server", () => {
+    it('Should set task in task object when todolists set from server', () => {
         const todoLists = [
             {
-                id: "First_todo",
-                title: "First_todo",
-                addedDate: "",
+                id: 'First_todo',
+                title: 'First_todo',
+                addedDate: '',
                 order: 0,
             },
             {
-                id: "Second_todo",
-                title: "Second_todo",
-                addedDate: "",
+                id: 'Second_todo',
+                title: 'Second_todo',
+                addedDate: '',
                 order: 0,
             },
         ];
         const state = tasksReducer({}, setTodoListsAC(todoLists));
 
         expect(Object.keys(state).length).toBe(2);
-        expect(state["First_todo"]).toStrictEqual([]);
-        expect(state["Second_todo"]).toStrictEqual([]);
-        expect(Object.keys(state)[0]).toBe("First_todo");
-        expect(Object.keys(state)[1]).toBe("Second_todo");
+        expect(state['First_todo']).toStrictEqual([]);
+        expect(state['Second_todo']).toStrictEqual([]);
+        expect(Object.keys(state)[0]).toBe('First_todo');
+        expect(Object.keys(state)[1]).toBe('Second_todo');
     });
 
-    it("Should set actual tasks after request to server", () => {
+    it('Should set actual tasks after request to server', () => {
         const newTasks = [
             {
-                todoListId: "First_todo",
-                id: "First_task",
-                description: "",
-                title: "First task",
+                todoListId: 'First_todo',
+                id: 'First_task',
+                description: '',
+                title: 'First task',
                 status: TaskStatuses.New,
                 priority: TaskPriorities.Low,
-                startDate: "",
-                deadline: "",
+                startDate: '',
+                deadline: '',
                 order: 0,
-                addedDate: "",
+                addedDate: '',
             },
             {
-                todoListId: "First_todo",
-                id: "Second_task",
-                description: "",
-                title: "Second task",
+                todoListId: 'First_todo',
+                id: 'Second_task',
+                description: '',
+                title: 'Second task',
                 status: TaskStatuses.New,
                 priority: TaskPriorities.Low,
-                startDate: "",
-                deadline: "",
+                startDate: '',
+                deadline: '',
                 order: 0,
-                addedDate: "",
+                addedDate: '',
             },
         ];
 
-        const state = tasksReducer(tasks, setTasksAC("First_todo", newTasks));
+        const state = tasksReducer(tasks, setTasksAC('First_todo', newTasks));
 
-        expect(state["First_todo"].length).toBe(2);
-        expect(state["First_todo"][0].todoListId).toBe("First_todo");
-        expect(state["First_todo"][1].todoListId).toBe("First_todo");
-        expect(state["First_todo"][0].id).toBe("First_task");
-        expect(state["First_todo"][1].id).toBe("Second_task");
+        expect(state['First_todo'].length).toBe(2);
+        expect(state['First_todo'][0].todoListId).toBe('First_todo');
+        expect(state['First_todo'][1].todoListId).toBe('First_todo');
+        expect(state['First_todo'][0].id).toBe('First_task');
+        expect(state['First_todo'][1].id).toBe('Second_task');
+    });
+
+    it('Should change Entity status', () => {
+        const newTasks = tasksReducer(tasks, changeTaskEntityStatusAC(todoID, taskID, EntityStatus.Loading));
+
+        expect(newTasks[todoID][0].entityStatus).toBe(EntityStatus.Loading)
     });
 });
