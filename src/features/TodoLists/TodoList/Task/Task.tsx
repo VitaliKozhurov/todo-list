@@ -1,19 +1,20 @@
-import { TaskStatuses, TaskType } from "../../../../api/tasksAPI";
-import { FC, useCallback } from "react";
-import s from "./Task.module.css";
-import { CustomCheckbox } from "../../../../components/CustomCheckbox/CustomCheckbox";
-import { useDispatch } from "react-redux";
+import {TaskStatuses} from '../../../../api/tasksAPI';
+import {FC, useCallback} from 'react';
+import s from './Task.module.css';
+import {CustomCheckbox} from '../../../../components/CustomCheckbox/CustomCheckbox';
 import {
+    AppTaskType,
     removeTaskTC,
     updateTaskTC,
-} from "../../../../state/tasksReducer/tasksReducer";
-import { EditableSpan } from "../../../../components/EditableSpan/EditableSpan";
-import { IconButton } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import React from "react";
-import { useAppDispatch } from "../../../../state/store";
+} from '../../../../state/tasksReducer/tasksReducer';
+import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
+import {IconButton} from '@mui/material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import React from 'react';
+import {useAppDispatch} from '../../../../state/store';
+import {EntityStatus} from '../../../../state/appReducer/appReducer';
 
-export const Task: FC<TaskType> = React.memo((props) => {
+export const Task: FC<AppTaskType> = React.memo((props) => {
     const {
         todoListId,
         id,
@@ -25,6 +26,7 @@ export const Task: FC<TaskType> = React.memo((props) => {
         deadline,
         order,
         addedDate,
+        entityStatus
     } = props;
     const dispatch = useAppDispatch();
 
@@ -32,19 +34,19 @@ export const Task: FC<TaskType> = React.memo((props) => {
         (status: boolean) => {
             status
                 ? dispatch(
-                      updateTaskTC(todoListId, id, {
-                          status: TaskStatuses.Completed,
-                      })
-                  )
+                    updateTaskTC(todoListId, id, {
+                        status: TaskStatuses.Completed,
+                    })
+                )
                 : dispatch(
-                      updateTaskTC(todoListId, id, { status: TaskStatuses.New })
-                  );
+                    updateTaskTC(todoListId, id, {status: TaskStatuses.New})
+                );
         },
         [dispatch, id, todoListId]
     );
     const changeTaskTitle = useCallback(
         (title: string) => {
-            dispatch(updateTaskTC(todoListId, id, { title }));
+            dispatch(updateTaskTC(todoListId, id, {title}));
         },
         [dispatch, todoListId, id]
     );
@@ -57,12 +59,13 @@ export const Task: FC<TaskType> = React.memo((props) => {
             <div className={s.taskBody}>
                 <CustomCheckbox
                     checked={status === TaskStatuses.Completed}
-                    color={"primary"}
+                    color={'primary'}
                     callback={changeTaskStatus}
+                    disabled={entityStatus === EntityStatus.Loading}
                 />
                 <EditableSpan title={title} changeTitle={changeTaskTitle} />
                 <IconButton onClick={onRemoveTask}>
-                    <DeleteOutlineIcon color={"error"} />
+                    <DeleteOutlineIcon color={'error'} />
                 </IconButton>
             </div>
         </>

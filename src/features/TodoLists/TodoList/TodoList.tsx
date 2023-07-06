@@ -17,10 +17,10 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {TaskStatuses, TaskType} from '../../../api/tasksAPI';
 import {TasksFilter} from './TasksFilter/TasksFilter';
 import {useAppDispatch} from '../../../state/store';
-import {addTaskTC, getTasksTC,} from '../../../state/tasksReducer/tasksReducer';
+import {addTaskTC, AppTaskType, getTasksTC,} from '../../../state/tasksReducer/tasksReducer';
 import {EntityStatus} from '../../../state/appReducer/appReducer';
 
-const filterTask = (filter: FilterValuesType, tasks: TaskType[]) => {
+const filterTask = (filter: FilterValuesType, tasks: AppTaskType[]) => {
     if (filter === 'active') {
         return tasks.filter((task) => task.status === TaskStatuses.New);
     }

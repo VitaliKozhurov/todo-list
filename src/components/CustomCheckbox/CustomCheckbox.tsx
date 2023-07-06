@@ -3,6 +3,7 @@ import React from "react";
 import { ChangeEvent, FC } from "react";
 type CheckBoxType = {
     checked: boolean;
+    disabled:boolean;
     color:
         | "primary"
         | "secondary"
@@ -14,7 +15,7 @@ type CheckBoxType = {
     callback: (status: boolean) => void;
 };
 export const CustomCheckbox: FC<CheckBoxType> = React.memo(
-    ({ checked, color, callback }) => {
+    ({ checked, color,disabled, callback }) => {
         const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
             callback(e.currentTarget.checked);
         };
@@ -23,6 +24,7 @@ export const CustomCheckbox: FC<CheckBoxType> = React.memo(
                 checked={checked}
                 color={color}
                 onChange={onChangeHandler}
+                disabled={disabled}
             />
         );
     }

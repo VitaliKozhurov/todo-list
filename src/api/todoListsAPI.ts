@@ -1,4 +1,5 @@
 import {todoListInstance, ResponseType} from './axiosInstance';
+import {AxiosResponse} from 'axios';
 
 export class TodoListsAPI {
     static getTodoLists() {
@@ -6,14 +7,15 @@ export class TodoListsAPI {
     }
 
     static createTodoList(title: string) {
-        return todoListInstance.post<ResponseType<CreateTodoDataType>>(
-            'todo-lists',
-            {title}
-        );
+        return todoListInstance.post<
+            ResponseType<CreateTodoDataType>,
+            AxiosResponse<ResponseType<CreateTodoDataType>>,
+            { title: string }
+        >('todo-lists', {title});
     }
 
     static upDateTodoList(todoListID: string, title: string) {
-        return todoListInstance.put<ResponseType>(
+        return todoListInstance.put<ResponseType, AxiosResponse<ResponseType>, { title: string }>(
             `todo-lists/${todoListID}`,
             {title}
         );

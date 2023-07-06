@@ -107,6 +107,7 @@ export const getTodoListTC =
                 dispatch(setAppStatusAC(EntityStatus.Succeeded))
             })
             .catch((error) => {
+                console.log(error)
                 appNetworkHandlingError(error, dispatch)
             })
     };

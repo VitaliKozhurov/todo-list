@@ -1,4 +1,5 @@
 import { todoListInstance, ResponseType } from "./axiosInstance";
+import {AxiosResponse} from 'axios';
 export class TasksAPI {
     static getTasks(todoListID: string) {
         return todoListInstance.get<GetTasksResponseType>(
@@ -7,7 +8,7 @@ export class TasksAPI {
     }
 
     static createTask(todoListID: string, title: string) {
-        return todoListInstance.post<ResponseType<TasksDataType>>(
+        return todoListInstance.post<ResponseType<TasksDataType>, AxiosResponse<ResponseType<TasksDataType>>, {title:string}>(
             `todo-lists/${todoListID}/tasks`,
             { title }
         );
@@ -18,7 +19,7 @@ export class TasksAPI {
         taskID: string,
         updatedTask: UpdatedTaskType
     ) {
-        return todoListInstance.put<ResponseType<TasksDataType>>(
+        return todoListInstance.put<ResponseType<TasksDataType>, AxiosResponse<ResponseType<TasksDataType>>, UpdatedTaskType>(
             `todo-lists/${todoListID}/tasks/${taskID}`,
             updatedTask
         );
