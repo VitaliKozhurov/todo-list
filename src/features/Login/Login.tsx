@@ -9,7 +9,10 @@ import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button/Button';
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
-import s from './Login.module.css'
+import {loginUserTC} from '../../state/authReducer/authReducer';
+import {AppStateType, useAppDispatch} from '../../state/store';
+import {useSelector} from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
 const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email is required!'),
@@ -18,6 +21,8 @@ const validationSchema = Yup.object({
 })
 
 export const Login = () => {
+    const isLogged = useSelector<AppStateType, boolean>(state => state.login.isLoggedStatus);
+    const dispatch = useAppDispatch();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -26,12 +31,14 @@ export const Login = () => {
         },
         validationSchema,
         onSubmit: (values) => {
-            alert(JSON.stringify(values))
+            dispatch(loginUserTC(values))
         },
-    })
+    });
 
     const {handleSubmit, handleChange, values, errors, touched} = formik;
-    console.log(errors)
+    if (isLogged) {
+        return <Navigate to={'/'} />
+    }
     return (
         <>
             <Grid container justifyContent={'center'}>
@@ -39,9 +46,11 @@ export const Login = () => {
                     <form onSubmit={handleSubmit}>
                         <FormControl style={{width: '100%'}} margin={'normal'}>
                             <FormLabel>
-                                This is Login form
+                                <p>This is Login form for Todo List</p>
+                                <p>Email: free@samuraijs.com</p>
+                                <p>Password: free</p>
                             </FormLabel>
-                            <FormGroup style={{margin: '30px 0'}}>
+                            <FormGroup style={{margin: '10px 0'}}>
                                 <TextField
                                     variant="standard"
                                     type={'text'}

@@ -5,16 +5,22 @@ import IconButton from '@mui/material/IconButton/IconButton';
 import Toolbar from '@mui/material/Toolbar/Toolbar';
 import Typography from '@mui/material/Typography/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
-import React from 'react';
+import React, {useCallback} from 'react';
 import LinearProgress from '@mui/material/LinearProgress/LinearProgress';
-import Box from '@mui/material/Box/Box';
-import {AppStateType} from '../../state/store';
+import {AppStateType, useAppDispatch} from '../../state/store';
 import {EntityStatus} from '../../state/appReducer/appReducer';
 import {useSelector} from 'react-redux';
+import {logoutUserTC} from '../../state/authReducer/authReducer';
 
 
 export const Header = () => {
-    const isLoading = useSelector<AppStateType, EntityStatus>(state => state.app.status)
+    const dispatch = useAppDispatch();
+    const isLoading = useSelector<AppStateType, EntityStatus>(state => state.app.status);
+    const isLogged = useSelector<AppStateType, boolean>(state => state.login.isLoggedStatus);
+
+    const logOutAppHandler = useCallback(() => {
+        dispatch(logoutUserTC())
+    }, [])
     return (
         <div className={s.body}>
             <AppBar position="static">
@@ -31,7 +37,11 @@ export const Header = () => {
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         Todo App
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {
+                        isLogged && <Button onClick={logOutAppHandler} color="inherit">Log out</Button>
+
+                    }
+
                 </Toolbar>
                 {isLoading === EntityStatus.Loading && (
                     <div className={s.loader}>

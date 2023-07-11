@@ -10,13 +10,16 @@ import {
     addTodoListTC,
     getTodoListTC,
 } from '../../state/todoListReducer/todolists-reducer';
-import {useAppDispatch} from '../../state/store';
+import {AppStateType, useAppDispatch} from '../../state/store';
 import '../../app/App.css';
+import {Navigate} from 'react-router-dom';
 
 
 export const TodoLists = () => {
-    const todoLists = useSelector(todoListsSelector);
     const dispatch = useAppDispatch();
+    const todoLists = useSelector(todoListsSelector);
+    const isLogged = useSelector<AppStateType, boolean>(state => state.login.isLoggedStatus);
+
     const addTodoList = useCallback(
         (title: string) => {
             dispatch(addTodoListTC(title));
@@ -25,8 +28,15 @@ export const TodoLists = () => {
     );
     // Example request for todo lists
     useEffect(() => {
+        if (!isLogged) {
+            return
+        }
         dispatch(getTodoListTC());
     }, []);
+
+    if (!isLogged) {
+        return <Navigate to={'/login'} />
+    }
     return (
         <div className="contentBody">
             <AddItemForm onAddItem={addTodoList} title="Add new todo" />
