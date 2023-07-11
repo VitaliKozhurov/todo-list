@@ -8,6 +8,7 @@ export const appServerHandlingError = <T>(data: ResponseType<T>, dispatch: Dispa
     dispatch(setAppStatusAC(EntityStatus.Failed))
 }
 export const appNetworkHandlingError = (error: { message: string }, dispatch: Dispatch<RootAppActionsType>) => {
+    console.log(error)
     dispatch(setAppErrorAC(error.message ? error.message : 'Something went wrong'));
     dispatch(setAppStatusAC(EntityStatus.Failed))
 }
